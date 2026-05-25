@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-сервисы 2026 — интерактивный гид</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font: 'Inter', system-ui, -apple-system, sans-serif;
+      --radius: 20px;
+      --radius-sm: 12px;
+      --radius-xs: 8px;
+
+      --bg: #f0f4f8;
+      --bg-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --surface: rgba(255, 255, 255, 0.85);
+      --surface-solid: #ffffff;
+      --surface-hover: rgba(255, 255, 255, 0.95);
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: rgba(148, 163, 184, 0.25);
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --shadow-glow: 0 0 40px -10px var(--accent);
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --glass: blur(20px) saturate(180%);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b0f19;
+      --bg-hero: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      --surface: rgba(30, 41, 59, 0.7);
+      --surface-solid: #1e293b;
+      --surface-hover: rgba(30, 41, 59, 0.9);
+      --text: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: rgba(148, 163, 184, 0.15);
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.4);
+      --shadow-glow: 0 0 40px -10px var(--accent);
+      --accent: #818cf8;
+      --accent-hover: #6366f1;
+      --glass: blur(20px) saturate(180%);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.4s ease, color 0.4s ease;
+      min-height: 100vh;
+    }
+
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bg-mesh::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.06) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+      animation: meshMove 20s ease-in-out infinite alternate;
+    }
+    @keyframes meshMove {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(-2%, -2%) rotate(2deg); }
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      color: var(--text);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-lg);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 1.25rem;
+    }
+    .theme-toggle:hover {
+      transform: scale(1.1) rotate(15deg);
+      box-shadow: var(--shadow-xl), var(--shadow-glow);
+    }
+
+    .hero-wrap {
+      position: relative;
+      z-index: 1;
+      padding: 80px 24px 40px;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-hero);
+      opacity: 0.15;
+      mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    }
+    .hero {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: var(--surface);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      border: 1px solid var(--border);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+      animation: fadeInDown 0.8s ease-out both;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeInUp 0.8s ease-out 0.1s both;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 28px;
+      font-weight: 400;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+    .counter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      background: var(--surface);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      border: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: var(--shadow-lg);
+      animation: fadeInUp 0.8s ease-out 0.3s both;
+    }
+    .counter-pill .num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .filters {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 20px 24px;
+      background: color-mix(in srgb, var(--bg) 70%, transparent);
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .filters.collapsed { padding-top: 12px; padding-bottom: 12px; }
+    .filters-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: gap 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .filters.collapsed .filters-inner { gap: 0; }
+
+    .search-box {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 16px 20px 16px 52px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 15%, transparent), var(--shadow-lg);
+    }
+    .search-box input::placeholder { color: var(--text-muted); }
+    .search-box svg {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .filter-groups {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 300px;
+      opacity: 1;
+      overflow: hidden;
+      transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .filters.collapsed .filter-groups {
+      max-height: 0;
+      opacity: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .filter-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      font-family: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+    .chip::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s;
+    }
+    .chip:hover::before { transform: translateX(100%); }
+    .chip:hover {
+      border-color: var(--text-secondary);
+      color: var(--text);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .chip.active {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .chip-reset {
+      margin-left: auto;
+      background: transparent;
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .chip-reset:hover { background: var(--accent); color: white; }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .card {
+      background: var(--surface);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      animation: cardEnter 0.6s ease-out both;
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--cat-color, var(--accent));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: var(--shadow-xl), var(--shadow-glow);
+      border-color: color-mix(in srgb, var(--cat-color, var(--accent)) 30%, var(--border));
+    }
+    .card:hover::after { opacity: 1; }
+    @keyframes cardEnter {
+      from { opacity: 0; transform: translateY(30px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .card-header {
+      padding: 24px 24px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .card-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 0 24px 16px;
+    }
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .badge-category {
+      color: white;
+      background: var(--cat-color, var(--accent));
+      box-shadow: 0 2px 8px color-mix(in srgb, var(--cat-color, var(--accent)) 40%, transparent);
+    }
+    .badge-vpn { font-weight: 600; }
+    .vpn-no { background: rgba(34, 197, 94, 0.12); color: #16a34a; }
+    [data-theme="dark"] .vpn-no { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+    .vpn-sometimes { background: rgba(234, 179, 8, 0.12); color: #ca8a04; }
+    [data-theme="dark"] .vpn-sometimes { background: rgba(234, 179, 8, 0.15); color: #facc15; }
+    .vpn-yes { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
+    [data-theme="dark"] .vpn-yes { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+    .card-body {
+      padding: 0 24px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      flex: 1;
+    }
+    .card-details {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, margin 0.4s ease;
+      margin-top: 0;
+    }
+    .card.expanded .card-details {
+      max-height: 900px;
+      opacity: 1;
+      margin-top: 16px;
+    }
+    .card-details-inner {
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      background: color-mix(in srgb, var(--bg) 60%, transparent);
+      border: 1px solid var(--border);
+    }
+    .detail-row { margin-bottom: 14px; }
+    .detail-row:last-child { margin-bottom: 0; }
+    .detail-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+    .detail-value a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      word-break: break-all;
+      transition: color 0.2s;
+    }
+    .detail-value a:hover { text-decoration: underline; }
+    .price-free { color: #16a34a; font-weight: 700; }
+    [data-theme="dark"] .price-free { color: #4ade80; }
+    .price-paid { color: #ea580c; font-weight: 700; }
+    [data-theme="dark"] .price-paid { color: #fb923c; }
+
+    .tags-row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 0.75rem;
+      padding: 5px 12px;
+      border-radius: 6px;
+      background: var(--surface-solid);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .card-footer {
+      padding: 16px 24px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn {
+      padding: 10px 20px;
+      border-radius: var(--radius-xs);
+      border: none;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: inherit;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+      color: white;
+      box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 40%, transparent);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px color-mix(in srgb, var(--accent) 50%, transparent);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+      border-color: var(--text-secondary);
+    }
+    .rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #f59e0b;
+      margin-left: auto;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-secondary);
+      grid-column: 1 / -1;
+      animation: fadeInUp 0.6s ease-out both;
+    }
+    .empty-icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.5; }
+    .empty h3 {
+      font-size: 1.5rem;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .empty p { margin-bottom: 20px; max-width: 400px; margin-left: auto; margin-right: auto; }
+
+    .footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 48px 24px;
+      text-align: center;
+      background: var(--surface);
+      backdrop-filter: var(--glass);
+    }
+    .footer p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+    .footer-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .skeleton-grid .card { animation: none; pointer-events: none; }
+    .skeleton {
+      background: linear-gradient(90deg, var(--border) 25%, color-mix(in srgb, var(--surface) 80%, transparent) 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--radius-xs);
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .skeleton-title { height: 28px; width: 70%; margin-bottom: 12px; }
+    .skeleton-badge { height: 24px; width: 100px; margin-bottom: 16px; }
+    .skeleton-line { height: 16px; width: 100%; margin-bottom: 10px; }
+    .skeleton-line.short { width: 60%; }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <div class="bg-mesh"></div>
+  <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">🌓</button>
+
+  <header class="hero-wrap">
+    <div class="hero-bg"></div>
+    <div class="hero">
+      <div class="hero-badge">✨ Актуально на 2026 год</div>
+      <h1>AI-сервисы 2026<br>интерактивный гид</h1>
+      <p>Быстро найди подходящий инструмент для текста, кода, дизайна, видео или автоматизации</p>
+      <div class="counter-pill">
+        <span>В базе</span>
+        <span class="num" id="serviceCounter">0</span>
+        <span>сервисов</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="filters" id="filtersBar">
+    <div class="filters-inner">
+      <div class="search-box">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        </svg>
+        <input type="text" id="searchInput" placeholder="Поиск по названию, описанию или тегам...">
+      </div>
+      <div class="filter-groups" id="filterGroups">
+        <div class="filter-group">
+          <span class="filter-label">Категория</span>
+          <div class="chips" id="categoryFilters"></div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">VPN</span>
+          <div class="chips" id="vpnFilters"></div>
+          <button class="chip chip-reset" onclick="resetFilters()">↺ Сбросить</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <div class="grid" id="servicesGrid"></div>
+  </main>
+
+  <footer class="footer">
+    <p>Данные актуальны на 2026 год. Цены указаны ориентировочно и могут меняться. Перед использованием уточняйте актуальность на официальных сайтах.</p>
+    <div class="footer-actions">
+      <button class="btn btn-primary" onclick="exportToMd()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Экспортировать подборку (.md)
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    const categories = [
+      { name: "Текст и ресёрч", color: "#3b82f6" },
+      { name: "No-code / MVP / Код", color: "#6366f1" },
+      { name: "Презентации и документы", color: "#10b981" },
+      { name: "Изображения и креатив", color: "#f59e0b" },
+      { name: "Видео и аватары", color: "#ec4899" },
+      { name: "Автоматизация и ассистенты", color: "#14b8a6" },
+      { name: "Локальный / корпоративный контур", color: "#64748b" },
+      { name: "Маркетинг и бренд", color: "#8b5cf6" }
+    ];
+
+    const vpnOptions = [
+      { value: 'all', label: 'Все' },
+      { value: 'no_vpn', label: '🟢 Без VPN' },
+      { value: 'sometimes', label: '🟡 Иногда' },
+      { value: 'vpn', label: '🔴 Нужен VPN' }
+    ];
+
+    const servicesData = [
+      { id: 1, name: "ChatGPT (OpenAI)", category: "Текст и ресёрч", vpnStatus: "vpn", vpnLabel: "да", description: "Универсальный центр работы: тексты, анализ, код, таблицы, файлы, изображения, презентации, HTML, быстрые прототипы.", rating: 10, site: "openai.com/chatgpt", tags: ["тексты","анализ","код","презентации","прототипы"], pricing: "Есть бесплатный тариф. Plus $20/мес, Team $25/мес, Enterprise — по запросу" },
+      { id: 2, name: "Claude (Anthropic)", category: "Текст и ресёрч", vpnStatus: "vpn", vpnLabel: "да", description: "Длинные документы, регламенты, политики, программы обучения, аккуратные тексты, логика, чистый язык, аналитика.", rating: 10, site: "anthropic.com/claude", tags: ["документы","регламенты","аналитика","логика","обучение"], pricing: "Есть бесплатный тариф. Pro $20/мес, Team $25/мес, API — отдельно" },
+      { id: 3, name: "Gemini (Google)", category: "Текст и ресёрч", vpnStatus: "vpn", vpnLabel: "да", description: "Поиск, логика, факты, deep research, научные темы, статистика, образовательные тексты, связка с Google Workspace.", rating: null, site: "gemini.google.com", tags: ["поиск","факты","deep research","статистика","Workspace"], pricing: "Бесплатно (с лимитами). Gemini Advanced $20/мес (входит в Google One AI Premium)" },
+      { id: 4, name: "Google AI Studio", category: "Текст и ресёрч", vpnStatus: "vpn", vpnLabel: "да", description: "Тестирование промптов, генерация, прототипирование, работа с API-логикой, image generation.", rating: null, site: "aistudio.google.com", tags: ["промпты","API","генерация","прототипирование"], pricing: "Бесплатно (с лимитами). API — по тарифам Google Cloud" },
+      { id: 5, name: "Perplexity", category: "Текст и ресёрч", vpnStatus: "sometimes", vpnLabel: "обычно не нужен (иногда нестабильно)", description: "AI-поиск с источниками, факт-чекинг, конкурентные обзоры, исследовательские отчёты, сбор ссылок.", rating: null, site: "perplexity.ai", tags: ["поиск","факт-чекинг","обзоры","отчёты","ссылки"], pricing: "Бесплатно (с лимитами). Pro $20/мес" },
+      { id: 6, name: "Kimi", category: "Текст и ресёрч", vpnStatus: "sometimes", vpnLabel: "обычно не нужен (иногда нестабильно)", description: "Длинные тексты, большие объёмы контекста, методички, объяснения, конспекты, документы, таблицы, слайды, research workflows.", rating: null, site: "kimi.moonshot.cn", tags: ["длинные тексты","контекст","конспекты","research","слайды"], pricing: "Бесплатно (с лимитами)" },
+      { id: 7, name: "Qwen (Qwen Chat)", category: "Текст и ресёрч", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен", description: "Open-source и корпоративные сценарии, внутренние ассистенты, RAG, document processing, локальный контур.", rating: null, site: "qwen.ai", tags: ["open-source","корпоративный","RAG","документы"], pricing: "Бесплатно (веб). API и Enterprise — по запросу" },
+      { id: 8, name: "Mistral AI", category: "Текст и ресёрч", vpnStatus: "vpn", vpnLabel: "скорее нужен", description: "Европейский стек, EU-контекст, документы, многоязычность, enterprise-сценарии.", rating: null, site: "mistral.ai", tags: ["EU","многоязычность","enterprise","документы"], pricing: "Бесплатно (Le Chat). API и Enterprise — по запросу" },
+      { id: 9, name: "GigaChat", category: "Текст и ресёрч", vpnStatus: "no_vpn", vpnLabel: "нет", description: "Русский язык, российский контекст, бытовые и корпоративные задачи, генерация текста и изображений в локальном контуре.", rating: null, site: "gigachat.ru", tags: ["русский язык","текст","изображения","локальный","корпоративный"], pricing: "Бесплатно (с лимитами). Бизнес-тарифы — по запросу" },
+      { id: 10, name: "YandexGPT / Алиса", category: "Текст и ресёрч", vpnStatus: "no_vpn", vpnLabel: "нет", description: "Экосистема Яндекса, русскоязычные запросы, корпоративные и массовые сценарии, интеграции с сервисами Яндекса, AI для бизнеса через Yandex Cloud.", rating: null, site: "yandex.ru/gpt", tags: ["Яндекс","русский язык","бизнес","интеграции","Cloud"], pricing: "Бесплатно (с лимитами). Yandex Cloud — по тарифам" },
+
+      { id: 11, name: "Lovable", category: "No-code / MVP / Код", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен", description: "Быстрые MVP, внутренние ассистенты, интерфейсы, дашборды, веб-приложения, full-stack разработка на естественном языке.", rating: 9, site: "lovable.dev", tags: ["MVP","интерфейсы","дашборды","full-stack","no-code"], pricing: "Платно. От ~$20/мес (ориентировочно)" },
+      { id: 12, name: "Base44", category: "No-code / MVP / Код", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен", description: "Business apps, customer portals, внутренние сервисы, app builder без кода, создание приложений по текстовому описанию.", rating: null, site: "base44.com", tags: ["business apps","порталы","app builder","no-code"], pricing: "Платно. От ~$15/мес (ориентировочно)" },
+      { id: 13, name: "Bubble", category: "No-code / MVP / Код", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен (возможны локальные ограничения)", description: "No-code, визуальная логика, базы данных, workflows, privacy rules, сборка web/mobile apps.", rating: null, site: "bubble.io", tags: ["no-code","базы данных","workflows","web/mobile"], pricing: "Есть бесплатный (для разработки). От $29/мес" },
+      { id: 14, name: "v0 by Vercel", category: "No-code / MVP / Код", vpnStatus: "vpn", vpnLabel: "скорее нужен", description: "Landing pages, интерфейсы, frontend-прототипы, дашборды, экраны, демо для руководства, быстрый путь от идеи к working app.", rating: null, site: "v0.dev", tags: ["landing","frontend","прототипы","дашборды","демо"], pricing: "Бесплатно (с лимитами). Vercel Pro $20/мес" },
+      { id: 15, name: "Cursor", category: "No-code / MVP / Код", vpnStatus: "vpn", vpnLabel: "обычно нужен (нестабильно без VPN)", description: "Инженерная доработка, рефакторинг, agentic coding, работа по репозиторию, правка нескольких файлов.", rating: null, site: "cursor.com", tags: ["рефакторинг","agentic coding","репозиторий","файлы","IDE"], pricing: "Есть бесплатный (пробный). Pro $20/мес, Business $40/мес" },
+      { id: 16, name: "Replit", category: "No-code / MVP / Код", vpnStatus: "vpn", vpnLabel: "часто нужен (нестабильно без VPN)", description: "Быстрый app builder в браузере, создание и деплой рабочих прототипов без локальной настройки среды.", rating: null, site: "replit.com", tags: ["app builder","деплой","прототипы","браузер"], pricing: "Есть бесплатный. Core $7/мес, AI-функции — от $7/мес дополнительно" },
+      { id: 17, name: "Google Stitch", category: "No-code / MVP / Код", vpnStatus: "vpn", vpnLabel: "обычно нужен", description: "UI-концепты для web/mobile, wireframes, high-fidelity screens, путь от идеи к интерфейсу, design ideation.", rating: null, site: "stitch.withgoogle.com", tags: ["UI","wireframes","mobile","design","концепты"], pricing: "Бесплатно (экспериментальный, Google Labs)" },
+      { id: 18, name: "Opal (Google Labs)", category: "No-code / MVP / Код", vpnStatus: "vpn", vpnLabel: "обычно нужен", description: "AI mini-apps, внутренние мини-инструменты, простые агентные сервисы, demo-MVP на естественном языке.", rating: null, site: "opal.withgoogle.com", tags: ["mini-apps","мини-инструменты","agentic","MVP"], pricing: "Бесплатно (экспериментальный, Google Labs)" },
+
+      { id: 19, name: "Gamma", category: "Презентации и документы", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен", description: "Презентации, документы, мини-сайты, pitch decks, executive decks, учебные блоки, white papers, экспорт в PPT и PDF.", rating: 8.5, site: "gamma.app", tags: ["презентации","документы","сайты","PPT","PDF"], pricing: "Бесплатно (с лимитами). Plus от $8/мес, Pro от $15/мес" },
+      { id: 20, name: "Genspark", category: "Презентации и документы", vpnStatus: "vpn", vpnLabel: "скорее нужен", description: "All-in-one workspace для слайдов, документов, картинок, видео, кода и agentic-задач; образовательные модули, карточки, тесты, research.", rating: null, site: "genspark.ai", tags: ["workspace","слайды","код","agentic","research"], pricing: "Бесплатно (с лимитами). Pro — по подписке" },
+      { id: 21, name: "Canva + Canva AI / Magic Studio", category: "Презентации и документы", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен", description: "Дизайн, маркетинговые материалы, слайды, соцсети, простые лендинги, брендовый визуал, AI-дизайн внутри редактора.", rating: null, site: "canva.com", tags: ["дизайн","маркетинг","соцсети","лендинги","слайды"], pricing: "Бесплатно. Pro $15/мес (1 чел.), Teams $30/мес" },
+      { id: 22, name: "Kimi", category: "Презентации и документы", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен", description: "Содержание презентаций, структура, тезисы, сценарии слайдов, методички, учебные материалы, длинные конспекты.", rating: null, site: "kimi.moonshot.cn", tags: ["презентации","структура","тезисы","методички","конспекты"], pricing: "Бесплатно (с лимитами)" },
+      { id: 23, name: "Napkin AI", category: "Презентации и документы", vpnStatus: "sometimes", vpnLabel: "обычно не нужен (иногда нестабильно)", description: "Превращение текста в схемы, диаграммы, визуальные объяснения, business storytelling, визуальные summary.", rating: null, site: "napkin.ai", tags: ["схемы","диаграммы","storytelling","summary","визуал"], pricing: "Бесплатно (beta, с лимитами)" },
+
+      { id: 24, name: "Midjourney", category: "Изображения и креатив", vpnStatus: "vpn", vpnLabel: "да", description: "Художественные изображения, стилизованные материалы, маркетинг, креатив, баннеры, иллюстрации, арт-контент.", rating: 8.5, site: "midjourney.com", tags: ["художество","маркетинг","баннеры","иллюстрации","арт"], pricing: "Платно. Basic от $10/мес, Standard $30/мес, Pro $60/мес" },
+      { id: 25, name: "OpenAI Image / ChatGPT", category: "Изображения и креатив", vpnStatus: "vpn", vpnLabel: "да", description: "Иконки, инфографика, обложки, иллюстрации для презентаций, понятное исполнение промпта, хороший русский язык.", rating: null, site: "chatgpt.com", tags: ["иконки","инфографика","обложки","иллюстрации","русский"], pricing: "Через подписку ChatGPT Plus/Pro (от $20/мес) или API отдельно" },
+      { id: 26, name: "Google image generation / NanoBanana (AI Studio)", category: "Изображения и креатив", vpnStatus: "vpn", vpnLabel: "да", description: "Точное исполнение промпта, инфографика, визуальные эксперименты, генерация в Google-экосистеме.", rating: null, site: "aistudio.google.com", tags: ["инфографика","эксперименты","Google","промпт"], pricing: "Бесплатно (с лимитами в AI Studio). API — по тарифам Google Cloud" },
+      { id: 27, name: "Stable Diffusion / Stability AI", category: "Изображения и креатив", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен", description: "Open-source, self-hosted сценарии, кастомизация, тонкая настройка, локальный контур, корпоративные эксперименты.", rating: null, site: "stability.ai", tags: ["open-source","self-hosted","кастомизация","локальный","корпоративный"], pricing: "Бесплатно (self-hosted/open-source). API Stability — от $10/мес" },
+      { id: 28, name: "Krea", category: "Изображения и креатив", vpnStatus: "sometimes", vpnLabel: "иногда нужен", description: "Realtime-генерация, быстрые вариации, визуальный контроль, стиль, референсы, доработка изображения в живом режиме.", rating: null, site: "krea.ai", tags: ["realtime","вариации","референсы","стиль","доработка"], pricing: "Бесплатно (с лимитами). Pro от $10/мес" },
+      { id: 29, name: "Kandinsky / Fusion Brain", category: "Изображения и креатив", vpnStatus: "no_vpn", vpnLabel: "нет", description: "Русскоязычная генерация изображений, локальные сценарии, бесплатный доступ, простые маркетинговые и бытовые задачи.", rating: null, site: "fusionbrain.ai", tags: ["русский","бесплатно","локальный","маркетинг","бытовые"], pricing: "Бесплатно" },
+
+      { id: 30, name: "HeyGen", category: "Видео и аватары", vpnStatus: "sometimes", vpnLabel: "иногда нужен", description: "Аватары, дубляж, локализация, обучающие ролики, говорящие персонажи, корпоративные видео.", rating: null, site: "heygen.com", tags: ["аватары","дубляж","локализация","обучение","корпоративное"], pricing: "Платно. Creator от $24/мес (годовой) или $29/мес" },
+      { id: 31, name: "Pika", category: "Видео и аватары", vpnStatus: "sometimes", vpnLabel: "иногда нужен", description: "Короткие стильные ролики, тизеры, анимация, ролики для слайдов и презентаций.", rating: null, site: "pika.art", tags: ["ролики","тизеры","анимация","презентации","стиль"], pricing: "Бесплатно (с лимитами). Pro от $8/мес, Unlimited $58/мес" },
+      { id: 32, name: "Runway", category: "Видео и аватары", vpnStatus: "vpn", vpnLabel: "обычно нужен", description: "Генерация видео, монтаж, эффекты, storytelling, motion-вставки, creative demos, презентационные видеосцены.", rating: null, site: "runwayml.com", tags: ["видео","монтаж","эффекты","storytelling","demos"], pricing: "Платно. Standard $12/мес (годовой), Unlimited $76/мес" },
+      { id: 33, name: "Kling", category: "Видео и аватары", vpnStatus: "vpn", vpnLabel: "чаще нужен (бывает нестабильно)", description: "Эффектный визуал, кинематографичные и более «вау»-ролики.", rating: null, site: "klingai.com", tags: ["кино","вау-эффект","визуал","кинематограф"], pricing: "Бесплатно (с лимитами). Платные тарифы — по запросу" },
+      { id: 34, name: "Google Veo / video stack", category: "Видео и аватары", vpnStatus: "vpn", vpnLabel: "да", description: "Высококачественные видеоэксперименты внутри Google AI-экосистемы.", rating: null, site: "aistudio.google.com", tags: ["видео","эксперименты","Google","качество"], pricing: "Бесплатно (с лимитами в AI Studio). API — по тарифам Google Cloud" },
+      { id: 35, name: "Luma", category: "Видео и аватары", vpnStatus: "vpn", vpnLabel: "чаще нужен (нестабильно без VPN)", description: "Динамичный визуальный контент, creative demos, видеогенерация, быстрые эффектные ролики.", rating: null, site: "lumalabs.ai", tags: ["динамика","creative","видеогенерация","ролики","эффекты"], pricing: "Бесплатно (с лимитами). Платные тарифы — по запросу" },
+
+      { id: 36, name: "n8n", category: "Автоматизация и ассистенты", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен", description: "Интеграции, RAG-боты, пайплайны, агенты, уведомления, маршрутизация задач, HR/Legal/Finance workflows.", rating: null, site: "n8n.io", tags: ["интеграции","RAG","пайплайны","workflows","HR/Legal/Finance"], pricing: "Бесплатно (self-hosted). Cloud Starter $20/мес, Pro $50/мес" },
+      { id: 37, name: "Make", category: "Автоматизация и ассистенты", vpnStatus: "sometimes", vpnLabel: "иногда нужен", description: "Визуальные сценарии, быстрые no-code интеграции, автоматизации без инженерии.", rating: null, site: "make.com", tags: ["сценарии","интеграции","автоматизация","no-code"], pricing: "Бесплатно (с лимитами). Core от $9/мес, Pro от $16/мес" },
+      { id: 38, name: "Zapier", category: "Автоматизация и ассистенты", vpnStatus: "vpn", vpnLabel: "обычно нужен (нестабильно)", description: "Лёгкие интеграции между SaaS-сервисами, AI workflows, агенты, автоматизация западного стека.", rating: null, site: "zapier.com", tags: ["SaaS","workflows","агенты","автоматизация","интеграции"], pricing: "Бесплатно (с лимитами). Professional от $20/мес" },
+      { id: 39, name: "Qwen", category: "Автоматизация и ассистенты", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен", description: "Корпоративные ассистенты, локальные решения, RAG и внутренние knowledge-боты.", rating: null, site: "qwen.ai", tags: ["ассистенты","RAG","knowledge-боты","локальный"], pricing: "Бесплатно (веб). API и Enterprise — по запросу" },
+      { id: 40, name: "Genspark Claw workspace", category: "Автоматизация и ассистенты", vpnStatus: "vpn", vpnLabel: "скорее нужен", description: "Выполнение задач целиком: research, docs, calendar, code, процессы и агентные сценарии.", rating: null, site: "genspark.ai", tags: ["research","docs","calendar","код","агенты"], pricing: "Бесплатно (с лимитами). Pro — по подписке" },
+      { id: 41, name: "Opal (Google Labs)", category: "Автоматизация и ассистенты", vpnStatus: "vpn", vpnLabel: "да", description: "Внутренние ассистенты, mini-tools, agentic MVP, быстрые демо.", rating: null, site: "opal.withgoogle.com", tags: ["ассистенты","mini-tools","MVP","демо","agentic"], pricing: "Бесплатно (экспериментальный, Google Labs)" },
+
+      { id: 42, name: "LM Studio", category: "Локальный / корпоративный контур", vpnStatus: "no_vpn", vpnLabel: "нет", description: "Запуск локальных моделей, тесты open-source LLM, демонстрация локального контура на своём компьютере.", rating: null, site: "lmstudio.ai", tags: ["локальные модели","open-source","LLM","тесты"], pricing: "Бесплатно" },
+      { id: 43, name: "Qwen (локально)", category: "Локальный / корпоративный контур", vpnStatus: "no_vpn", vpnLabel: "нет", description: "Корпоративные ассистенты внутри контура, RAG, документооборот, закрытые knowledge-системы.", rating: null, site: "qwen.ai", tags: ["корпоративный","RAG","документооборот","knowledge"], pricing: "Бесплатно (open-source)" },
+      { id: 44, name: "DeepSeek (локально)", category: "Локальный / корпоративный контур", vpnStatus: "no_vpn", vpnLabel: "нет", description: "Недорогие корпоративные ассистенты, аналитика, код, локальный контур, чувствительные данные.", rating: null, site: "deepseek.ai", tags: ["ассистенты","аналитика","код","чувствительные данные","локальный"], pricing: "Бесплатно (open-source, локально). API — один из самых дешёвых на рынке" },
+      { id: 45, name: "Continue", category: "Локальный / корпоративный контур", vpnStatus: "vpn", vpnLabel: "обычно нужен (нестабильно)", description: "AI-помощник в IDE, code assistant, quality control, работа с подключёнными моделями в dev-среде.", rating: null, site: "continue.dev", tags: ["IDE","code assistant","quality control","dev","модели"], pricing: "Бесплатно (open-source)" },
+
+      { id: 46, name: "Canva + Canva AI", category: "Маркетинг и бренд", vpnStatus: "no_vpn", vpnLabel: "обычно не нужен", description: "Маркетинговые материалы, соцсети, визуалы, брендовый контент, быстрый дизайн без дизайнера.", rating: null, site: "canva.com", tags: ["маркетинг","соцсети","визуалы","бренд","дизайн"], pricing: "Бесплатно. Pro $15/мес" },
+      { id: 47, name: "Pomelli (Google Labs)", category: "Маркетинг и бренд", vpnStatus: "vpn", vpnLabel: "обычно нужен", description: "Анализ бренд-ДНК, понимание business DNA, создание on-brand контента и креативных направлений.", rating: null, site: "pomelli.withgoogle.com", tags: ["бренд-ДНК","business DNA","on-brand","креатив"], pricing: "Бесплатно (экспериментальный, Google Labs)" },
+      { id: 48, name: "Photoshoot (Google Labs)", category: "Маркетинг и бренд", vpnStatus: "vpn", vpnLabel: "обычно нужен", description: "Превращение обычных фото товаров в студийные и lifestyle product shots.", rating: null, site: "labs.withgoogle.com", tags: ["фото товаров","studio","lifestyle","product shots"], pricing: "Бесплатно (экспериментальный, Google Labs)" },
+      { id: 49, name: "Midjourney", category: "Маркетинг и бренд", vpnStatus: "vpn", vpnLabel: "да", description: "Креативные визуалы, сильная эстетика, брендовый контент, арт и рекламные образы.", rating: null, site: "midjourney.com", tags: ["креатив","эстетика","бренд","арт","реклама"], pricing: "Платно. Basic от $10/мес, Standard $30/мес" },
+      { id: 50, name: "OpenAI Image", category: "Маркетинг и бренд", vpnStatus: "vpn", vpnLabel: "да", description: "Быстрые иллюстрации, инфографика, визуалы под посты, презентации и маркетинг.", rating: null, site: "chatgpt.com", tags: ["иллюстрации","инфографика","посты","презентации","маркетинг"], pricing: "Через подписку ChatGPT Plus/Pro (от $20/мес) или API отдельно" }
+    ];
+
+    let currentCategory = 'all';
+    let currentVpn = 'all';
+    let currentSearch = '';
+    let expandedCards = new Set();
+
+    function getCategoryColor(name) {
+      return categories.find(c => c.name === name)?.color || '#6366f1';
+    }
+
+    function getVpnInfo(status) {
+      switch(status) {
+        case 'no_vpn': return { label: 'Без VPN', class: 'vpn-no', icon: '🟢' };
+        case 'sometimes': return { label: 'Иногда', class: 'vpn-sometimes', icon: '🟡' };
+        case 'vpn': return { label: 'Нужен VPN', class: 'vpn-yes', icon: '🔴' };
+        default: return { label: 'Неизвестно', class: 'vpn-sometimes', icon: '⚪' };
+      }
+    }
+
+    function renderFilters() {
+      const catContainer = document.getElementById('categoryFilters');
+      catContainer.innerHTML = `<button class="chip ${currentCategory === 'all' ? 'active' : ''}" onclick="setCategory('all')">Все</button>`;
+      categories.forEach(cat => {
+        const isActive = currentCategory === cat.name;
+        const style = isActive ? `style="background:${cat.color};color:#fff;border-color:${cat.color};"` : '';
+        catContainer.innerHTML += `<button class="chip ${isActive ? 'active' : ''}" onclick="setCategory('${cat.name}')" ${style}>${cat.name}</button>`;
+      });
+
+      const vpnContainer = document.getElementById('vpnFilters');
+      vpnContainer.innerHTML = '';
+      vpnOptions.forEach(opt => {
+        vpnContainer.innerHTML += `<button class="chip ${currentVpn === opt.value ? 'active' : ''}" onclick="setVpn('${opt.value}')">${opt.label}</button>`;
+      });
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      renderFilters();
+      renderServices();
+    }
+
+    function setVpn(vpn) {
+      currentVpn = vpn;
+      renderFilters();
+      renderServices();
+    }
+
+    function resetFilters() {
+      currentCategory = 'all';
+      currentVpn = 'all';
+      currentSearch = '';
+      document.getElementById('searchInput').value = '';
+      expandedCards.clear();
+      document.getElementById('filtersBar').classList.remove('collapsed');
+      renderFilters();
+      renderServices();
+    }
+
+    function showSkeleton() {
+      const grid = document.getElementById('servicesGrid');
+      grid.classList.add('skeleton-grid');
+      grid.innerHTML = '';
+      for (let i = 0; i < 6; i++) {
+        grid.innerHTML += `
+          <div class="card">
+            <div style="padding:24px;">
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-badge"></div>
+              <div class="skeleton skeleton-line"></div>
+              <div class="skeleton skeleton-line short"></div>
+            </div>
+          </div>`;
+      }
+    }
+
+    function renderServices() {
+      const grid = document.getElementById('servicesGrid');
+      grid.classList.remove('skeleton-grid');
+      const filtered = servicesData.filter(s => {
+        const matchCat = currentCategory === 'all' || s.category === currentCategory;
+        const matchVpn = currentVpn === 'all' || s.vpnStatus === currentVpn;
+        const q = currentSearch;
+        const matchSearch = !q ||
+          s.name.toLowerCase().includes(q) ||
+          s.description.toLowerCase().includes(q) ||
+          s.tags.some(t => t.toLowerCase().includes(q));
+        return matchCat && matchVpn && matchSearch;
+      });
+
+      const counter = document.getElementById('serviceCounter');
+      const start = parseInt(counter.textContent) || 0;
+      const end = filtered.length;
+      if (start !== end) {
+        const duration = 400;
+        const startTime = performance.now();
+        function animate(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const ease = 1 - Math.pow(1 - progress, 3);
+          counter.textContent = Math.round(start + (end - start) * ease);
+          if (progress < 1) requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty">
+            <div class="empty-icon">🔭</div>
+            <h3>Ничего не найдено</h3>
+            <p>Попробуй изменить фильтры или поисковый запрос — возможно, искомый сервис скрыт за другими настройками.</p>
+            <button class="btn btn-primary" onclick="resetFilters()">Сбросить фильтры</button>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((s, idx) => {
+        const catColor = getCategoryColor(s.category);
+        const vpn = getVpnInfo(s.vpnStatus);
+        const isExpanded = expandedCards.has(s.id);
+        const ratingHtml = s.rating ? `<div class="rating"><span>★</span> ${s.rating}</div>` : '';
+        const isFree = s.pricing.toLowerCase().includes('бесплатно') && !s.pricing.toLowerCase().includes('платно');
+        const priceClass = isFree ? 'price-free' : 'price-paid';
+
+        return `
+          <article class="card ${isExpanded ? 'expanded' : ''}" style="--cat-color:${catColor}; animation-delay:${Math.min(idx * 0.04, 0.6)}s">
+            <div class="card-header">
+              <div class="card-title">${s.name}</div>
+              ${ratingHtml}
+            </div>
+            <div class="card-badges">
+              <span class="badge badge-category">${s.category}</span>
+              <span class="badge badge-vpn ${vpn.class}">${vpn.icon} ${vpn.label}</span>
+            </div>
+            <div class="card-body">
+              <p>${s.description}</p>
+              <div class="card-details">
+                <div class="card-details-inner">
+                  <div class="detail-row">
+                    <div class="detail-label">Официальный сайт</div>
+                    <div class="detail-value"><a href="https://${s.site}" target="_blank" rel="noopener">https://${s.site} ↗</a></div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-label">💰 Стоимость / Тарифы</div>
+                    <div class="detail-value ${priceClass}">${s.pricing}</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-label">Ключевые сценарии</div>
+                    <div class="tags-row">${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+                  </div>
+                  ${s.rating ? `
+                  <div class="detail-row">
+                    <div class="detail-label">Понимание языка</div>
+                    <div class="detail-value" style="color:#f59e0b;font-weight:700;">★ ${s.rating} / 10</div>
+                  </div>` : ''}
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-primary" onclick="toggleDetails(${s.id})">
+                ${isExpanded ? 'Свернуть' : 'Подробнее'}
+              </button>
+              <a href="https://${s.site}" target="_blank" rel="noopener" class="btn btn-ghost">Перейти на сайт ↗</a>
+            </div>
+          </article>`;
+      }).join('');
+    }
+
+    function toggleDetails(id) {
+      if (expandedCards.has(id)) expandedCards.delete(id);
+      else expandedCards.add(id);
+      renderServices();
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+
+    function exportToMd() {
+      const filtered = servicesData.filter(s => {
+        const matchCat = currentCategory === 'all' || s.category === currentCategory;
+        const matchVpn = currentVpn === 'all' || s.vpnStatus === currentVpn;
+        const q = currentSearch;
+        const matchSearch = !q ||
+          s.name.toLowerCase().includes(q) ||
+          s.description.toLowerCase().includes(q) ||
+          s.tags.some(t => t.toLowerCase().includes(q));
+        return matchCat && matchVpn && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        alert('Нет сервисов для экспорта. Измените фильтры.');
+        return;
+      }
+
+      let md = `# AI-сервисы 2026: подборка\n\n`;
+      md += `**Дата:** ${new Date().toLocaleDateString('ru-RU')}\n`;
+      md += `**Всего сервисов:** ${filtered.length}\n`;
+      md += `**Фильтры:** ${currentCategory !== 'all' ? currentCategory : 'Все категории'} | ${currentVpn !== 'all' ? vpnOptions.find(v=>v.value===currentVpn).label : 'Все VPN-статусы'}\n\n`;
+      md += `| # | Сервис | Категория | VPN | Стоимость | Описание | Сайт | Теги |\n`;
+      md += `|---|--------|-----------|-----|-----------|----------|------|------|\n`;
+      filtered.forEach((s, i) => {
+        const vpnLabel = getVpnInfo(s.vpnStatus).label;
+        md += `| ${i+1} | ${s.name} | ${s.category} | ${vpnLabel} | ${s.pricing} | ${s.description} | [${s.site}](https://${s.site}) | ${s.tags.join(', ')} |\n`;
+      });
+      md += `\n---\n`;
+      md += `> Данные актуальны на 2026 год. Цены указаны ориентировочно и могут меняться. Перед использованием уточняйте актуальность на официальных сайтах.\n`;
+
+      const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ai-servisy-2026-${new Date().toISOString().slice(0,10)}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    let lastScrollY = window.scrollY;
+    const filtersBar = document.getElementById('filtersBar');
+    let ticking = false;
+
+    function onScroll() {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 120) {
+        filtersBar.classList.add('collapsed');
+      } else if (currentScrollY < lastScrollY) {
+        filtersBar.classList.remove('collapsed');
+      }
+      lastScrollY = currentScrollY;
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(onScroll);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    function init() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+
+      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        currentSearch = e.target.value.toLowerCase().trim();
+        renderServices();
+      });
+
+      renderFilters();
+      showSkeleton();
+      setTimeout(() => renderServices(), 500);
+    }
+
+    init();
+  </script>
+</body>
+</html>
